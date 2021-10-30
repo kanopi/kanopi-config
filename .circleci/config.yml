@@ -33,12 +33,12 @@ jobs:
               git subtree split --prefix=${SUB_PATH} -b "${SUB_BRANCH}"
               git remote add "${REMOTE_REPO_NAME}" "${REMOTE_REPO}"
 
-              REMOTE_END="${CIRCLE_BRANCH}"
               if [[ "${CIRCLE_TAG}" != "" ]]; then
                 git tag -f "${CIRCLE_TAG}" ${SUB_BRANCH}
-                REMOTE_END="${CIRCLE_TAG}"
+                git push -f "${REMOTE_REPO_NAME}" "${CIRCLE_BRANCH}"
+              else
+                git push -f "${REMOTE_REPO_NAME}" "${SUB_BRANCH}":"${CIRCLE_BRANCH}"
               fi
-              git push -f "${REMOTE_REPO_NAME}" "${SUB_BRANCH}":"${REMOTE_END}"
 
               git checkout "${CIRCLE_SHA1}"
             done \<<< "${KEYS}"
