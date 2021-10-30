@@ -7,20 +7,25 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Install JQ
+          name: Install Tools
           command: |
             curl -fsSL -o /usr/local/bin/jq https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64
+            apk add git-subtree
       - run:
           name: Push Items
           command: |
             FILE=split-tree.json
             KEYS=$(jq -r '. | keys | .[]' $FILE)
             while IFS= read -r KEY; do
-              REPO=$(jq -r --arg key "${KEY}" '.[$key].repo' $FILE)
+              REMOTE_REPO=$(jq -r --arg key "${KEY}" '.[$key].repo' $FILE)
               SUB_PATH=$(jq -r --arg key "${KEY}" '.[$key].path' $FILE)
-              git subtree split --prefix=${SUB_PATH} -b "${KEY}"
-              git remote add "${KEY}" "${REPO}"
-              git push "${KEY}" "${KEY}":"${CIRCLECI_BRANCH}"
+              SUB_BRANCH="repo/${KEY}"
+              REMOTE_REPO_NAME="${KEY}"
+
+              git subtree split --prefix=${SUB_PATH} -b "${SUB_BRANCH}"
+              git remote add "${REMOTE_REPO_NAME}" "${REMOTE_REPO}"
+              git push "${REMOTE_REPO_NAME}" "${SUB_BRANCH}":"${CIRCLECI_BRANCH}"
+              git checkout ${CIRCLECI_BRANCH}
             done \<<< "${KEYS}"
   split_tag:
     docker:
