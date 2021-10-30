@@ -28,7 +28,7 @@ job:
     steps:
       - checkout
 
-workflow:
+workflows:
   build_branch:
     jobs:
       - split_branch:
