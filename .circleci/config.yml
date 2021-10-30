@@ -10,6 +10,10 @@ jobs:
     steps:
       - ci-tools/copy-ssh-key
       - checkout
+      - run:
+          name: Set Default Key
+          command: 
+            echo "IdentityFile $HOME/.ssh/development_key" | tee -a $HOME/.ssh/config
       - ci-tools/install-jq
       - run:
           name: Install Git Subtree
