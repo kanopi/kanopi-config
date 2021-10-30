@@ -33,7 +33,7 @@ workflows:
     jobs:
       - split_branch:
           context: kanopi-code
-          filteres:
+          filters:
             branches:
               only: /.*/
             tags:
