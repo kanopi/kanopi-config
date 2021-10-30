@@ -17,8 +17,8 @@ jobs:
             KEYS=$(jq -r '. | keys | .[]' $FILE)
             while IFS= read -r KEY; do
               REPO=$(jq -r --arg key "${KEY}" '.[$key].repo' $FILE)
-              PATH=$(jq -r --arg key "${KEY}" '.[$key].path' $FILE)
-              git subtree split --prefix=${PATH} -b "${KEY}"
+              SUB_PATH=$(jq -r --arg key "${KEY}" '.[$key].path' $FILE)
+              git subtree split --prefix=${SUB_PATH} -b "${KEY}"
               git remote add "${KEY}" "${REPO}"
               git push "${KEY}" "${KEY}":"${CIRCLECI_BRANCH}"
             done \<<< "${KEYS}"
