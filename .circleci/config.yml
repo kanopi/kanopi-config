@@ -33,15 +33,15 @@ workflows:
     jobs:
       - split_branch:
           context: kanopi-code
-          filter:
-            branch:
+          filteres:
+            branches:
               only: /.*/
-            tag:
+            tags:
               ignore: /.*/
       - split_tag:
           context: kanopi-code
-          filter:
-            branch:
+          filters:
+            branches:
               ignore: /.*/
-            tag:
-              only: /.*/
+            tags:
+              only: /^v[0-9]+(\.[0-9]+)*$/
