@@ -36,6 +36,7 @@ jobs:
               REMOTE_END="${CIRCLE_BRANCH}"
               if [[ "${CIRCLE_TAG}" != "" ]]; then
                 git tag -f "${CIRCLE_TAG}" ${SUB_BRANCH}
+                REMOTE_END="${CIRCLE_TAG}"
               fi
               git push -f "${REMOTE_REPO_NAME}" "${SUB_BRANCH}":"${REMOTE_END}"
 
