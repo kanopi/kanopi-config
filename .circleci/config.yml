@@ -1,0 +1,47 @@
+version: 2.1
+
+job:
+  split_branch:
+    docker:
+      - image: cimg/base
+    steps:
+      - checkout
+      - run:
+          name: Install JQ
+          command: |
+            curl -fsSL -o /usr/local/bin/jq https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64
+      - run:
+          name: Push Items
+          command: |
+            FILE=split-tree.json
+            KEYS=$(jq -r '. | keys | .[]' $FILE)
+            while IFS= read -r KEY; do
+              REPO=$(jq -r --arg key "${KEY}" '.[$key].repo' $FILE)
+              PATH=$(jq -r --arg key "${KEY}" '.[$key].path' $FILE)
+              git subtree split --prefix=${PATH} -b "${KEY}"
+              git remote add "${KEY}" "${REPO}"
+              git push "${KEY}" "${KEY}":"${CIRCLECI_BRANCH}"
+            done <<< "${KEYS}"
+  split_tag:
+    docker:
+      - image: cimg/base
+    steps:
+      - checkout
+
+workflow:
+  build_branch:
+    jobs:
+      - split_branch:
+          context: kanopi-code
+          filter:
+            branch:
+              only: /.*/
+            tag:
+              ignore: /.*/
+      - split_tag:
+          context: kanopi-code
+          filter:
+            branch:
+              ignore: /.*/
+            tag:
+              only: /.*/
