@@ -1,15 +1,18 @@
 version: 2.1
 
+orbs:
+  ci-tools: kanopi/ci-tools@1.7.1
+
 jobs:
   split_branch:
     docker:
       - image: cibuilds/base
     steps:
       - checkout
+      - ci-tools/install-jq
       - run:
-          name: Install Tools
+          name: Install Git Subtree
           command: |
-            curl -fsSL -o /usr/local/bin/jq https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64
             apk add git-subtree
       - run:
           name: Push Items
