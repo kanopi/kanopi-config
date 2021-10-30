@@ -1,5 +1,5 @@
 {
-    "name": "kanopi/circleci_config_pantheon",
+    "name": "kanopi/circleci-config-pantheon",
     "description": "CircleCI Configuration for Pantheon Project",
     "license": "MIT",
     "type": "project",
