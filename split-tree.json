@@ -5,6 +5,6 @@
   },
   "docksal_config_pantheon": {
     "path": "docksal/pantheon",
-    "repo": "git@github.com:kanopi/circleci-config-pantheon.git"
+    "repo": "git@github.com:kanopi/docksal-config-pantheon.git"
   }
 }
