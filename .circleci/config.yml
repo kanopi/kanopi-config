@@ -35,7 +35,7 @@ jobs:
 
               if [[ "${CIRCLE_TAG}" != "" ]]; then
                 git tag -f "${CIRCLE_TAG}" ${SUB_BRANCH}
-                git push -f "${REMOTE_REPO_NAME}" "${CIRCLE_BRANCH}"
+                git push -f "${REMOTE_REPO_NAME}" "${CIRCLE_TAG}"
               else
                 git push -f "${REMOTE_REPO_NAME}" "${SUB_BRANCH}":"${CIRCLE_BRANCH}"
               fi
